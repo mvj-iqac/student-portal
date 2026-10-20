@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}</style>
+<title>MVJCE Study Hour Portal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: campus atlas. Navy ink, copper accent, teal secondary. Hero = a 3-D carousel of every discipline orbiting the college crest. */
+:root{
+  --bg:#EEF2F6; --bg2:#E3E9F0; --surface:#FFFFFF; --ink:#0E1A2B; --muted:#56657A; --line:#D2DBE5;
+  --copper:#B8622A; --copper-soft:#F3E2D5; --teal:#0F7C74; --teal-soft:#D5EEEA; --navy:#12233D; --on-navy:#FFFFFF;
+  --shadow:0 1px 0 rgba(14,26,43,.04),0 18px 40px -18px rgba(14,26,43,.28);
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#09111D; --bg2:#0E1828; --surface:#122036; --ink:#E7EDF5; --muted:#93A3B8; --line:#22324A;
+  --copper:#E58A4E; --copper-soft:#3A2416; --teal:#3CC3B5; --teal-soft:#0F2E2D; --navy:#1A3358; --on-navy:#FFFFFF;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 22px 44px -20px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#09111D; --bg2:#0E1828; --surface:#122036; --ink:#E7EDF5; --muted:#93A3B8; --line:#22324A;
+  --copper:#E58A4E; --copper-soft:#3A2416; --teal:#3CC3B5; --teal-soft:#0F2E2D; --navy:#1A3358; --on-navy:#FFFFFF;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 22px 44px -20px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:radial-gradient(circle at 1px 1px,var(--line) 1px,transparent 0);background-size:22px 22px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700}
+.muted{color:var(--muted)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:8px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.logo-plate{height:44px;display:flex;align-items:center;background:#fff;border-radius:10px;padding:4px 8px;border:1px solid var(--line);flex:none}
+.logo-plate img{height:34px;width:auto;display:block}
+.logo-fallback{font:800 15px var(--f-display);color:#12233D;letter-spacing:.02em}
+.brand-txt b{font-family:var(--f-display);font-size:14px;line-height:1.15;display:block}
+.brand-txt small{font-size:11.5px;color:var(--muted);display:block}
+.nav{margin-left:auto;display:flex;gap:4px;align-items:center}
+.nav a{font-size:14px;font-weight:600;text-decoration:none;padding:8px 12px;border-radius:999px;color:var(--muted);white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.nav a:hover{color:var(--ink)}.nav a[aria-current="page"]:hover{color:var(--bg)}
+@media (max-width:640px){.brand-txt{display:none}.nav a{padding:7px 10px;font-size:13px}.nav .ext{display:none}}
+
+section{padding-block:28px}
+.sec-head{margin-bottom:18px}
+.sec-head h2{font-size:clamp(22px,3vw,32px);font-weight:700;margin-top:6px}
+.sec-head p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+
+/* home hero (compact) */
+.hero{padding-block:28px 6px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+.hero h1{font-size:clamp(30px,5vw,56px);line-height:1.03;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--copper)}
+.hero p{font-size:17px;max-width:54ch;color:var(--muted);margin:14px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font:700 12px var(--f-mono);padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.chip.iqac{background:var(--teal);color:var(--on-navy);border-color:transparent}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .orbit-box{display:none}}
+
+/* 3-D discipline carousel */
+.orbit-box{position:relative;height:300px;perspective:900px;display:grid;place-items:center;border-radius:22px;
+  background:radial-gradient(ellipse at 50% 85%,color-mix(in srgb,var(--teal) 22%,transparent),transparent 60%),var(--navy);overflow:hidden;box-shadow:var(--shadow)}
+.ring{position:absolute;width:76px;height:76px;transform-style:preserve-3d;animation:spin 34s linear infinite}
+.tile{position:absolute;inset:0;border-radius:16px;display:grid;place-items:center;gap:0;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(2px);color:#fff;
+  transform:rotateY(var(--a)) translateZ(var(--rad,175px));backface-visibility:visible}
+.tile svg{width:34px;height:34px}
+.tile span{position:absolute;bottom:-20px;font:700 10px var(--f-mono);letter-spacing:.08em;color:#C9D6E6;white-space:nowrap}
+.tile:nth-child(3n+1) svg{color:#E58A4E}.tile:nth-child(3n+2) svg{color:#3CC3B5}.tile:nth-child(3n) svg{color:#F2F5F9}
+.crest{position:relative;z-index:2;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 20px 40px -14px rgba(0,0,0,.6);max-width:62%}
+.crest img{display:block;max-height:64px;width:auto;max-width:100%}
+.orbit-tag{position:absolute;left:14px;bottom:12px;font:700 11px var(--f-mono);letter-spacing:.12em;color:#8FA3BC;text-transform:uppercase;z-index:3}
+@keyframes spin{from{transform:rotateX(-14deg) rotateY(0)}to{transform:rotateX(-14deg) rotateY(-360deg)}}
+@media (max-width:520px){.orbit-box{height:250px}.tile{--rad:135px}}
+
+/* department cards */
+.depts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.grp{grid-column:1/-1;font:700 12px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:14px 0 -2px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.grp:first-child{margin-top:0}
+.dept{position:relative;display:block;text-decoration:none;color:inherit;border-radius:18px;padding:16px;min-height:150px;
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);transform-style:preserve-3d;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease,box-shadow .25s}
+.dept .code{font:800 26px var(--f-display);transform:translateZ(22px);display:block}
+.dept .name{transform:translateZ(14px);display:block;font-weight:600;font-size:14.5px;margin-top:6px;max-width:24ch;overflow-wrap:anywhere}
+.dept .status{position:absolute;left:16px;bottom:14px;font:700 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dept .glyph{position:absolute;right:12px;top:12px;width:42px;height:42px;color:var(--line)}
+.dept.live{background:linear-gradient(150deg,var(--navy),color-mix(in srgb,var(--navy) 65%,var(--teal)));border-color:transparent;padding-bottom:48px}
+.dept.live .code,.dept.live .name{color:var(--on-navy)}
+.dept.live .status{color:var(--copper);background:var(--surface);padding:5px 9px;border-radius:999px}
+.dept.live .glyph{color:#E58A4E}
+.dept.live:hover{box-shadow:0 30px 50px -22px rgba(14,26,43,.55)}
+.dept.soon{cursor:default}
+.dept.soon .code,.dept.soon .name{opacity:.8}
+
+/* about */
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.note p{margin:0 0 12px;max-width:64ch}.note p:last-child{margin:0}
+.pillars{display:grid;gap:10px}
+.pillar{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--r);background:var(--bg2);border:1px solid var(--line)}
+.pillar svg{flex:none;width:24px;height:24px;color:var(--teal)}
+.pillar b{display:block;font-size:15px}.pillar span{font-size:14px;color:var(--muted)}
+.about .orbit-box{display:none;margin-top:14px}
+@media (max-width:820px){.about{grid-template-columns:1fr}.about .orbit-box{display:grid}}
+
+/* ECE page */
+.crumbs{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted);padding-top:22px}
+.crumbs a{text-decoration:none;font-weight:600;color:var(--copper)}
+.ece-head{padding-block:8px 6px}
+.ece-head h1{font-size:clamp(26px,4.2vw,44px);font-weight:800}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 14px;margin-top:16px;max-width:620px;box-shadow:var(--shadow)}
+.search svg{width:18px;height:18px;color:var(--muted);flex:none}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:500 16px var(--f-body);color:var(--ink);padding:10px 0;outline:none}
+.subnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 61px);z-index:15;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-top:16px}
+.subnav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.subnav button{flex:none;font:600 14px var(--f-body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.subnav button:hover{border-color:var(--copper)}
+.subnav button.on{background:var(--copper);border-color:var(--copper);color:#fff}
+@media (max-width:640px){.subnav{top:calc(env(safe-area-inset-top,0px) + 61px)}}
+
+/* faculty cards */
+.fac{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .2s,border-color .2s}
+.fcard:hover{border-color:var(--copper)}
+.fcard header{display:flex;gap:12px;align-items:center}
+.ph{width:58px;height:58px;border-radius:16px;object-fit:cover;flex:none;background:var(--bg2);display:grid;place-items:center;font:800 17px var(--f-display);color:#fff}
+.fcard h3{font:700 16px/1.25 var(--f-body);letter-spacing:0}
+.fcard small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.clinks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.clinks a{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:baseline;text-decoration:none;padding:9px 11px;border-radius:11px;background:var(--bg2);border:1px solid transparent}
+.clinks a:hover{border-color:var(--copper);background:var(--copper-soft)}
+.clinks .cc{font:700 11.5px var(--f-mono);color:var(--copper)}
+.clinks .cn{font-weight:600;font-size:14px;line-height:1.3}
+.clinks .cs{grid-column:2;font-size:12px;color:var(--muted)}
+.idx{display:flex;justify-content:space-between;align-items:center;text-decoration:none;font:700 12.5px var(--f-mono);color:var(--teal);padding-top:2px;margin-top:auto}
+
+/* browse */
+.tabs{display:flex;gap:4px;padding:4px;border-radius:14px;background:var(--surface);border:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tab{flex:1 0 auto;font:600 14px var(--f-body);padding:10px 14px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 10px}
+.controls label{font:700 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.seg{display:inline-flex;gap:4px;flex-wrap:wrap}
+.chipbtn{font:600 13px var(--f-body);padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--copper);color:#fff;border-color:var(--copper)}
+.panel-note{font-size:14px;color:var(--muted);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{text-align:left;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;
+  color:inherit;text-decoration:none;font:inherit;cursor:pointer;box-shadow:var(--shadow);transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .2s,border-color .2s}
+.card:hover{border-color:var(--copper)}
+.code-pill{align-self:flex-start;font:700 12px var(--f-mono);padding:4px 8px;border-radius:7px;background:var(--copper-soft);color:var(--copper);white-space:nowrap}
+.card h3{font:600 17px/1.25 var(--f-body);letter-spacing:0}
+.who{display:flex;flex-wrap:wrap;gap:6px}
+.who span{font-size:12.5px;padding:3px 8px;border-radius:999px;background:var(--bg2);color:var(--muted)}
+.go{margin-top:auto;font:700 12px var(--f-mono);color:var(--copper);letter-spacing:.06em;text-transform:uppercase}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px}
+
+/* chooser sheet */
+.sheet-bg{position:fixed;inset:0;background:rgba(6,12,22,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:max(16px,env(safe-area-inset-bottom,0px))}
+.sheet{background:var(--surface);border-radius:20px;padding:20px;width:100%;max-width:520px;max-height:80vh;overflow:auto;box-shadow:var(--shadow);animation:up .25s ease-out}
+@media (min-width:700px){.sheet-bg{align-items:center}}
+@keyframes up{from{transform:translateY(20px);opacity:.4}to{transform:none;opacity:1}}
+.sheet h3{font-size:19px;margin:8px 0 4px}
+.sheet .close{float:right;border:0;background:var(--bg2);color:var(--ink);border-radius:999px;width:34px;height:34px;cursor:pointer;font-size:18px}
+.opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);text-decoration:none;margin-top:8px}
+.opt:hover{border-color:var(--copper)}
+.opt .ph{width:40px;height:40px;border-radius:11px;font-size:13px}
+.opt small{color:var(--muted);display:block}
+.opt .arrow{margin-left:auto;font:700 12px var(--f-mono);color:var(--copper)}
+
+.back{display:inline-flex;margin-top:20px;font:600 14px var(--f-body);text-decoration:none;color:var(--copper)}
+footer{padding-block:28px 40px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:30px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--copper)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ring{animation:none;transform:rotateX(-14deg) rotateY(-20deg)}.dept,.card,.fcard{transition:none}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Study Hour Portal home">
+      <span class="logo-plate"><img src="https://thelifenavigator.com/wp-content/uploads/2026/10/mvjlogoupdatednew-2.png?w=1440" alt="MVJ College of Engineering" onerror="this.outerHTML='<span class=&quot;logo-fallback&quot;>MVJCE</span>'"></span>
+      <span class="brand-txt"><b>Study Hour Portal</b><small>An IQAC initiative</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#home" data-view="home">Programmes</a>
+      <a href="#ece" data-view="ece">ECE</a>
+      <a class="ext" href="https://mvjce.edu.in" target="_blank" rel="noopener">mvjce.edu.in ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ================= HOME ================= -->
+<div id="view-home">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">IQAC · Quality Improvement Initiative · 2026–27</div>
+      <h1>Study Hour <em>Portal</em></h1>
+      <p>Course pages from your own teachers, for every programme at MVJ College of Engineering. Pick your programme to begin.</p>
+      <div class="chips"><span class="chip iqac">IQAC · MVJCE</span><span class="chip">Odd Semester 2026–27</span><span class="chip" id="progCount"></span></div>
+    </div>
+    <div class="orbit-box" data-orbit aria-hidden="true"></div>
+  </div>
+
+  <section id="programmes" style="padding-top:18px">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Programmes</div><h2>Choose your programme</h2><p>ECE (UG) is live for the odd semester. Other programmes will open as their course pages are published.</p></div>
+      <div class="depts" id="depts"></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">About the initiative</div><h2>Why a Study Hour Portal</h2></div>
+      <div class="about">
+        <div>
+          <div class="note">
+            <p>The <b>Study Hour Portal</b> is an initiative of the <b>Internal Quality Assurance Cell (IQAC)</b> of MVJ College of Engineering, Bengaluru, as part of the institution's continuous quality improvement in teaching and learning.</p>
+            <p>Every faculty member keeps a course page for each subject they teach. The portal brings those pages together, so a student can reach the right material in two taps, whether they remember the teacher, the course code, or only their semester and section.</p>
+            <p class="muted">Course pages are hosted on GitHub Pages and kept up to date by the faculty themselves.</p>
+          </div>
+          <div class="orbit-box" data-orbit aria-hidden="true"></div>
+        </div>
+        <div class="pillars">
+          <div class="pillar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><div><b>Structured material</b><span>Syllabus, notes, slides and question banks for each course, in one format.</span></div></div>
+          <div class="pillar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><div><b>Any time, any device</b><span>Built for phones first, so the study hour can happen anywhere.</span></div></div>
+          <div class="pillar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20l6-6 4 4 8-8"/><path d="M15 10h6v6"/></svg><div><b>Quality outcomes</b><span>Supports NBA / NAAC criteria on teaching-learning and student support.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= ECE ================= -->
+<div id="view-ece" hidden>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#home">← All programmes</a><span>/</span><span>ECE · UG</span></nav>
+    <div class="ece-head">
+      <div class="eyebrow" style="margin-top:10px">Department of ECE · Undergraduate</div>
+      <h1>Electronics and Communication Engineering</h1>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="Search teacher, subject or course code" autocomplete="off" aria-label="Search teachers and courses"></div>
+    </div>
+  </div>
+  <div class="subnav"><div class="wrap" id="subnav">
+    <button data-go="faculty" data-tab="">Faculty</button>
+    <button data-go="browse" data-tab="sem">Semester</button>
+    <button data-go="browse" data-tab="year">Year</button>
+    <button data-go="browse" data-tab="sec">Section</button>
+    <button data-go="browse" data-tab="code">Course code</button>
+  </div></div>
+
+  <section id="faculty" style="padding-top:22px">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Faculty</div><h2>Course pages by teacher</h2><p id="facNote">Tap a course to open that teacher's page for it.</p></div>
+      <div class="fac" id="fac"></div>
+    </div>
+  </section>
+
+  <section id="browse">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Browse</div><h2>Find by semester, section or code</h2></div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab" role="tab" data-tab="sem">Semester</button>
+        <button class="tab" role="tab" data-tab="year">Year</button>
+        <button class="tab" role="tab" data-tab="sec">Section</button>
+        <button class="tab" role="tab" data-tab="code">Course code</button>
+      </div>
+      <div class="controls" id="controls"></div>
+      <p class="panel-note" id="note"></p>
+      <div id="out"></div>
+      <a class="back" href="#home">← Back to all programmes</a>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer><div class="wrap"><span>Study Hour Portal · An IQAC initiative of <a href="https://mvjce.edu.in" target="_blank" rel="noopener">MVJ College of Engineering</a>, Bengaluru</span><span>ECE data: Class Timetable 2026–27, Odd Semester</span></div></footer>
+
+<div class="sheet-bg" id="sheetBg" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
+
+<script>
+const DATA = {"T":[{"k":"ajayan","n":"Dr. Ajayan K R","id":"ajayan"},{"k":"anna","n":"Prof. Anna Johny","id":"johny"},{"k":"anu","n":"Prof. Anu Joy","id":"joy"},{"k":"arpita","n":"Dr. Arpita Mandal","id":"mandal"},{"k":"athulya","n":"Prof. Athulya Gopinath","id":"gopinath"},{"k":"brindha","n":"Dr. Brindha M","id":"brindha"},{"k":"chippy","n":"Dr. Chippy M Manu","id":"manu"},{"k":"chirdeep","n":"Dr. Chirdeep","id":"chirdeep"},{"k":"david","n":"Prof. David William Raj","id":"williamraj"},{"k":"divya","n":"Prof. Divya J","id":"divya"},{"k":"dona","n":"Dr. Dona Benny","id":"benny"},{"k":"easwari","n":"Prof. Easwari K","id":"easwari"},{"k":"jeeva","n":"Prof. Jeeva B","id":"jeeva"},{"k":"pandiammal","n":"Dr. K Pandiammal","id":"pandiammal"},{"k":"manuraju","n":"Dr. Manu Raju","id":"raju"},{"k":"neethu","n":"Prof. Neethu Pavithran","id":"pavithran"},{"k":"nirupama","n":"Prof. Nirupama","id":"nirupama"},{"k":"patil","n":"Prof. Patil Shankar Sreemant","id":"sreemant"},{"k":"pooja","n":"Prof. Pooja Gopan","id":"gopan"},{"k":"praveen","n":"Dr. Praveen","id":"praveen"},{"k":"peddiah","n":"Prof. S Peddiah","id":"peddiah"},{"k":"sanjana","n":"Prof. Sanjana James","id":"james"},{"k":"sathish","n":"Dr. Sathish Kumar M","id":"sathishkumar"},{"k":"savithri","n":"Prof. Savithri Kanshette","id":"kanshette"},{"k":"shenbaga","n":"Dr. Shenbagalakshmi V","id":"shenbagalakshmi"},{"k":"shima","n":"Dr. Shima Ramesh Maniyath","id":"maniyath"},{"k":"sneh","n":"Prof. Sneh Lata","id":"lata"},{"k":"sohel","n":"Dr. Sohel Rana","id":"rana"},{"k":"srinivasan","n":"Prof. Srinivasan K","id":"srinivasan"},{"k":"suranya","n":"Prof. Suranya K","id":"suranya"},{"k":"surya","n":"Prof. Surya C K","id":"surya"},{"k":"uday","n":"Mr. Uday Kumar","id":"udaykumar"},{"k":"vijay","n":"Prof. Vijaykumar S","id":"vijaykumar"}],"S":{"MVJ22EC51":"Technical Management","MVJ22EC52":"Digital Communication Systems","MVJ22EC53":"Signal Processing","MVJ22EC552/4":"Cryptography / Cloud Computing (Elective)","MVJ22ECP56":"Mini Project","MVJ22RMI57":"Research Methodology and IPR","MVJ22ENV58":"Environmental Studies","MVJ22PE59":"PE","MVJ25EC31":"Probability and Transformation Techniques","MVJ25EC32":"Digital Circuits and Verilog HDL","MVJ25EC33":"Analog Electronics & Linear Integrated Circuits","MVJ25EC34":"Network Analysis","MVJ25EC35":"Engineering Electromagnetics","MVJ25AECK37":"Sustainable Engineering and SDGs","MVJ25YO39":"Yoga","MVJ25MATDIP310":"Additional Mathematics – I","MVJ22EC71":"Computer Communication Networks","MVJ22EC72":"Microwave and Antenna","MVJ22EC73":"Wireless Cellular Communication","MVJ22EC741/4":"Artificial Intelligence / Wireless Sensor Networks (Elective)","MVJ22EC75X":"IOT and WSN / Satellite Communication (Elective)","MVJ22ECP76":"Major Project Phase II"},"R":[["V","A","MVJ22EC552/4","athulya"],["V","A","MVJ22EC552/4","neethu"],["V","A","MVJ22EC552/4","surya"],["V","A","MVJ22RMI57","dona"],["V","A","MVJ22PE59","uday"],["V","B","MVJ22EC552/4","athulya"],["V","B","MVJ22EC552/4","neethu"],["V","B","MVJ22EC552/4","surya"],["V","B","MVJ22RMI57","dona"],["V","B","MVJ22PE59","uday"],["V","C","MVJ22EC552/4","athulya"],["V","C","MVJ22EC552/4","neethu"],["V","C","MVJ22EC552/4","surya"],["V","C","MVJ22RMI57","dona"],["V","C","MVJ22PE59","uday"],["V","A","MVJ22EC51","suranya"],["V","A","MVJ22ECP56","suranya"],["V","A","MVJ22EC52","arpita"],["V","A","MVJ22EC52","chippy"],["V","A","MVJ22EC52","sanjana"],["V","A","MVJ22EC53","shima"],["V","A","MVJ22ENV58","chirdeep"],["V","B","MVJ22EC51","anna"],["V","B","MVJ22ECP56","sneh"],["V","B","MVJ22EC52","sneh"],["V","B","MVJ22EC52","chippy"],["V","B","MVJ22EC53","anu"],["V","B","MVJ22ENV58","praveen"],["V","C","MVJ22EC51","sneh"],["V","C","MVJ22ECP56","anu"],["V","C","MVJ22ECP56","pandiammal"],["V","C","MVJ22EC52","arpita"],["V","C","MVJ22EC52","sneh"],["V","C","MVJ22EC53","anu"],["V","C","MVJ22ENV58","peddiah"],["III","A","MVJ25EC31","patil"],["III","A","MVJ25EC32","brindha"],["III","A","MVJ25EC32","neethu"],["III","A","MVJ25EC33","ajayan"],["III","A","MVJ25EC33","manuraju"],["III","A","MVJ25EC34","sathish"],["III","A","MVJ25EC35","sohel"],["III","A","MVJ25AECK37","chirdeep"],["III","A","MVJ25MATDIP310","srinivasan"],["III","B","MVJ25EC31","patil"],["III","B","MVJ25EC32","shenbaga"],["III","B","MVJ25EC32","savithri"],["III","B","MVJ25EC33","jeeva"],["III","B","MVJ25EC34","pandiammal"],["III","B","MVJ25EC35","vijay"],["III","B","MVJ25AECK37","praveen"],["III","B","MVJ25MATDIP310","srinivasan"],["VII","A","MVJ22EC741/4","neethu"],["VII","A","MVJ22EC741/4","pooja"],["VII","A","MVJ22EC741/4","savithri"],["VII","A","MVJ22EC75X","surya"],["VII","A","MVJ22EC75X","divya"],["VII","B","MVJ22EC741/4","neethu"],["VII","B","MVJ22EC741/4","pooja"],["VII","B","MVJ22EC741/4","savithri"],["VII","B","MVJ22EC75X","surya"],["VII","B","MVJ22EC75X","divya"],["VII","C","MVJ22EC741/4","neethu"],["VII","C","MVJ22EC741/4","pooja"],["VII","C","MVJ22EC741/4","savithri"],["VII","C","MVJ22EC75X","surya"],["VII","C","MVJ22EC75X","divya"],["VII","A","MVJ22EC71","savithri"],["VII","A","MVJ22EC72","david"],["VII","A","MVJ22EC73","easwari"],["VII","A","MVJ22ECP76","arpita"],["VII","B","MVJ22EC71","vijay"],["VII","B","MVJ22EC72","arpita"],["VII","B","MVJ22EC72","divya"],["VII","B","MVJ22EC73","pooja"],["VII","B","MVJ22ECP76","manuraju"],["VII","C","MVJ22EC71","nirupama"],["VII","C","MVJ22EC72","athulya"],["VII","C","MVJ22EC73","anna"],["VII","C","MVJ22ECP76","david"]]};
+/* Edit this list to change the programme cards. live:true makes a card open its portal. */
+const DEPARTMENTS = [
+  {lvl:"UG",code:"ECE",name:"Electronics and Communication Engineering",live:true,href:"#ece",g:"wave"},
+  {lvl:"UG",code:"AERO",name:"Aeronautical Engineering",g:"wing"},
+  {lvl:"UG",code:"AIML",name:"Artificial Intelligence and Machine Learning",g:"net"},
+  {lvl:"UG",code:"ASE",name:"Aerospace Engineering",g:"orbit"},
+  {lvl:"UG",code:"CSE-DS",name:"Computer Science and Engineering (Data Science)",g:"bars"},
+  {lvl:"UG",code:"CSD",name:"Computer Science and Design",g:"pen"},
+  {lvl:"UG",code:"CSE",name:"Computer Science and Engineering",g:"chip"},
+  {lvl:"UG",code:"CHEM",name:"Chemical Engineering",g:"flask"},
+  {lvl:"UG",code:"CIVIL",name:"Civil Engineering",g:"beam"},
+  {lvl:"UG",code:"EEE",name:"Electrical and Electronics Engineering",g:"bolt"},
+  {lvl:"UG",code:"IIOT",name:"Industrial IoT",g:"iot"},
+  {lvl:"UG",code:"ISE",name:"Information Science and Engineering",g:"db"},
+  {lvl:"UG",code:"MECH",name:"Mechanical Engineering",g:"gear"},
+  {lvl:"PG",code:"MBA",name:"Master of Business Administration",g:"brief"},
+  {lvl:"PG",code:"AE",name:"M.Tech – Aeronautical Engineering",g:"wing"},
+  {lvl:"PG",code:"AI&DS",name:"M.Tech – Artificial Intelligence and Data Science",g:"net"},
+  {lvl:"PG",code:"STR",name:"M.Tech – Structural Engineering",g:"beam"},
+  {lvl:"PG",code:"VLSI",name:"M.Tech – VLSI Design and Technology",g:"chip"},
+  {lvl:"PG",code:"CSE",name:"M.Tech – Computer Science and Engineering",g:"db"},
+  {lvl:"PG",code:"ACT",name:"M.Tech – Advanced Communication Technology",g:"iot"},
+];
+const GLYPH = {
+  wave:'<path d="M2 24c5-14 10-14 15 0s10 14 15 0 9-10 12-6"/>',
+  chip:'<rect x="12" y="12" width="22" height="22" rx="3"/><path d="M17 12V5M23 12V5M29 12V5M17 41v-7M23 41v-7M29 41v-7M12 17H5M12 23H5M12 29H5M41 17h-7M41 23h-7M41 29h-7"/>',
+  db:'<ellipse cx="23" cy="10" rx="14" ry="5"/><path d="M9 10v26c0 3 6 5 14 5s14-2 14-5V10M9 23c0 3 6 5 14 5s14-2 14-5"/>',
+  net:'<circle cx="8" cy="12" r="4"/><circle cx="8" cy="34" r="4"/><circle cx="23" cy="23" r="4"/><circle cx="38" cy="12" r="4"/><circle cx="38" cy="34" r="4"/><path d="M12 13l8 8M12 33l8-8M26 21l8-8M26 25l8 8"/>',
+  bars:'<path d="M6 40h34M10 40V26M18 40V16M26 40V22M34 40V8"/>',
+  bolt:'<path d="M26 4L10 26h12l-3 16 17-24H24z"/>',
+  gear:'<circle cx="23" cy="23" r="7"/><path d="M23 4v7M23 35v7M4 23h7M35 23h7M9.6 9.6l5 5M31.4 31.4l5 5M9.6 36.4l5-5M31.4 14.6l5-5"/>',
+  beam:'<path d="M4 38h38M8 38V18l15-10 15 10v20M8 18h30M15 38V24M23 38V24M31 38V24"/>',
+  wing:'<path d="M4 26l38-12-14 16-4 10-4-8z"/>',
+  orbit:'<ellipse cx="23" cy="23" rx="19" ry="8" transform="rotate(-25 23 23)"/><circle cx="23" cy="23" r="5"/>',
+  flask:'<path d="M18 4h10M20 4v12L8 38c-1 2 0 4 3 4h24c3 0 4-2 3-4L26 16V4M13 30h20"/>',
+  pen:'<path d="M23 4l12 14-12 24L11 18z"/><circle cx="23" cy="22" r="3"/><path d="M23 4v15"/>',
+  iot:'<circle cx="23" cy="34" r="3"/><path d="M15 26a11 11 0 0 1 16 0M9 20a19 19 0 0 1 28 0M3 14a27 27 0 0 1 40 0"/>',
+  brief:'<rect x="5" y="14" width="36" height="26" rx="3"/><path d="M17 14V8h12v6M5 25h36"/>'
+};
+const svg = g=>`<svg viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${GLYPH[g]||""}</svg>`;
+const LOGO = "https://thelifenavigator.com/wp-content/uploads/2026/10/mvjlogoupdatednew-2.png?w=1440";
+const SEM_YEAR = {III:"2nd Year",V:"3rd Year",VII:"4th Year"};
+const SEMS = ["III","V","VII"];
+const T = {}; DATA.T.forEach(t=>T[t.k]=t);
+const base = k=>`https://mvj-ece-${T[k].id}.github.io/courses/`;
+/* Link overrides: a teacher's page that doesn't follow the mvj-ece-<id>.github.io pattern.
+   COURSE_LINK key = "<teacher key>|<course code>", INDEX_LINK key = "<teacher key>". */
+const COURSE_LINK = {"sohel|MVJ25EC35":"https://thelifenavigator.github.io/mvjec/index.html"};
+const INDEX_LINK = {"sohel":"https://thelifenavigator.github.io/mvjec/index.html"};
+const url = (k,code)=>COURSE_LINK[k+"|"+code]||base(k)+code.replace(/\//g,"-")+".html";
+const idxUrl = k=>INDEX_LINK[k]||base(k)+"index.html";
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const bare = n=>n.replace(/^(Dr|Prof|Mr|Ms|Mrs)\.\s*/,"");
+const codeOrder = Object.keys(DATA.S);
+const HUES=["#B8622A","#0F7C74","#2B4C7E","#8A4F9E","#A33B4B","#4F7A28"];
+const initials = n=>bare(n).split(/\s+/).filter(w=>w.length>1).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+/* photo thumbnail with initials fallback when photo.jpg is missing or blocked */
+function photo(k,i){
+  const t=T[k];const ini=esc(initials(t.n));const bg=HUES[i%HUES.length];
+  return `<img class="ph" src="${base(k)}photo.jpg" alt="${esc(t.n)}" loading="lazy" data-ini="${ini}" data-bg="${bg}" onerror="phFail(this)">`;
+}
+function phFail(img){const s=document.createElement("span");s.className="ph";s.textContent=img.dataset.ini;s.style.background=img.dataset.bg;s.setAttribute("aria-hidden","true");img.replaceWith(s);}
+
+const ROWS = DATA.R.map(([sem,sec,code,k])=>({sem,sec,code,name:DATA.S[code],k}));
+/* Faculty display order: these first, then other Dr., then everyone else (each group A–Z) */
+const FIRST = ["ajayan","sohel","brindha","shima"];
+const rank = t=>FIRST.includes(t.k)?FIRST.indexOf(t.k):(/^Dr\./.test(t.n)?10:20);
+const TEACHERS = DATA.T.map((t,i)=>({...t,i})).sort((a,b)=>rank(a)-rank(b)||bare(a.n).localeCompare(bare(b.n)));
+const pairsFor = k=>{const m=new Map();ROWS.filter(r=>r.k===k).forEach(r=>{if(!m.has(r.code))m.set(r.code,{code:r.code,name:r.name,sem:r.sem,secs:new Set()});m.get(r.code).secs.add(r.sec);});
+  return [...m.values()].sort((a,b)=>SEMS.indexOf(a.sem)-SEMS.indexOf(b.sem)||codeOrder.indexOf(a.code)-codeOrder.indexOf(b.code));};
+
+/* ---------- HOME ---------- */
+function orbit(){
+  const tiles=["wave","wing","net","orbit","bars","pen","chip","flask","beam","bolt","iot","gear","brief","db"];
+  const labels={wave:"ECE",wing:"AERO",net:"AIML",orbit:"ASE",bars:"DATA SCI",pen:"DESIGN",chip:"CSE",flask:"CHEM",beam:"CIVIL",bolt:"EEE",iot:"IIOT",gear:"MECH",brief:"MBA",db:"ISE"};
+  const step=360/tiles.length;
+  document.querySelectorAll("[data-orbit]").forEach(box=>{
+    box.innerHTML=`<div class="ring">${tiles.map((g,i)=>`<div class="tile" style="--a:${i*step}deg">${svg(g)}<span>${labels[g]}</span></div>`).join("")}</div>
+      <div class="crest"><img src="${LOGO}" alt="MVJ College of Engineering" onerror="this.outerHTML='<span class=&quot;logo-fallback&quot; style=&quot;font-size:22px&quot;>MVJCE</span>'"></div>
+      <span class="orbit-tag">20 programmes · one portal</span>`;
+  });
+}
+function home(){
+  document.getElementById("progCount").textContent=`${DEPARTMENTS.length} UG & PG programmes`;
+  let last="";
+  document.getElementById("depts").innerHTML=DEPARTMENTS.map(d=>{
+    const h=d.lvl!==last?`<h3 class="grp">${d.lvl==="UG"?"Undergraduate · B.E.":"Postgraduate · M.Tech & MBA"}</h3>`:"";last=d.lvl;
+    const inner=`<span class="glyph">${svg(d.g)}</span><span class="code">${esc(d.code)}</span><span class="name">${esc(d.name)}</span><span class="status">${d.live?"Open portal →":d.lvl+" · Coming soon"}</span>`;
+    return h+(d.live?`<a class="dept live" href="${d.href}">${inner}</a>`:`<div class="dept soon" aria-disabled="true">${inner}</div>`);
+  }).join("");
+  tilt(".dept.live",9);
+}
+function tilt(sel,max){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches||!matchMedia("(hover:hover)").matches)return;
+  document.querySelectorAll(sel).forEach(el=>{
+    el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      el.style.setProperty("--ry",(x*max)+"deg");el.style.setProperty("--rx",(-y*max)+"deg");});
+    el.addEventListener("pointerleave",()=>{el.style.setProperty("--ry","0deg");el.style.setProperty("--rx","0deg");});
+  });
+}
+
+/* ---------- ECE: faculty ---------- */
+let q="";
+function faculty(){
+  const s=q.trim().toLowerCase();
+  const list=TEACHERS.map(t=>{const ps=pairsFor(t.k);const nameHit=!s||t.n.toLowerCase().includes(s);
+      const shown=nameHit?ps:ps.filter(p=>p.code.toLowerCase().includes(s)||p.name.toLowerCase().includes(s));return {t,ps:shown};})
+    .filter(x=>x.ps.length);
+  document.getElementById("facNote").textContent=s?`${list.length} teacher${list.length===1?"":"s"} match “${q.trim()}”.`:`${list.length} teachers. Tap a course to open that teacher's page for it.`;
+  document.getElementById("fac").innerHTML=list.length?list.map(({t,ps})=>`
+    <article class="fcard"><header>${photo(t.k,t.i)}<div><h3>${esc(t.n)}</h3><small>${ps.length} course${ps.length>1?"s":""} · Sem ${[...new Set(ps.map(p=>p.sem))].join(", ")}</small></div></header>
+      <ul class="clinks">${ps.map(p=>`<li><a href="${url(t.k,p.code)}" target="_blank" rel="noopener"><span class="cc">${esc(p.code)}</span><span class="cn">${esc(p.name)}</span><span class="cs">Sem ${p.sem} · Section ${[...p.secs].sort().join(", ")}</span></a></li>`).join("")}</ul>
+      <a class="idx" href="${idxUrl(t.k)}" target="_blank" rel="noopener"><span>All my courses</span><span>→</span></a></article>`).join("")
+    :`<div class="empty">No teacher or course matches “${esc(q.trim())}”.</div>`;
+  tilt(".fcard",5);
+}
+
+/* ---------- ECE: browse ---------- */
+let tab="sem", st={sem:"V",year:"3rd Year",secSem:"V",sec:"A"};
+try{const s=JSON.parse(localStorage.getItem("sh2-state")||"null");if(s){tab=s.tab||tab;Object.assign(st,s.st||{});}}catch(e){}
+const saveState=()=>{try{localStorage.setItem("sh2-state",JSON.stringify({tab,st}))}catch(e){}};
+const seg=(name,vals,cur,lab=v=>v)=>`<span class="seg" data-name="${name}">${vals.map(v=>`<button class="chipbtn" aria-pressed="${v===cur}" data-v="${esc(v)}">${esc(lab(v))}</button>`).join("")}</span>`;
+function subjectCards(sem,section){
+  const codes=codeOrder.filter(c=>ROWS.some(r=>r.code===c&&r.sem===sem&&(!section||r.sec===section)));
+  if(!codes.length)return '<div class="empty">No courses found.</div>';
+  return `<div class="grid">${codes.map(c=>{
+    const ks=[...new Set(ROWS.filter(r=>r.code===c&&r.sem===sem&&(!section||r.sec===section)).map(r=>r.k))];
+    const inner=`<span class="code-pill">${esc(c)}</span><h3>${esc(DATA.S[c])}</h3><div class="who">${ks.map(k=>`<span>${esc(T[k].n)}</span>`).join("")}</div><span class="go">${ks.length===1?"Open course page →":"Choose teacher ("+ks.length+") →"}</span>`;
+    return ks.length===1?`<a class="card" href="${url(ks[0],c)}" target="_blank" rel="noopener">${inner}</a>`
+      :`<div class="card" role="button" tabindex="0" data-pick="${esc(c)}" data-sem="${sem}" data-sec="${section||""}">${inner}</div>`;
+  }).join("")}</div>`;
+}
+function codeCards(){
+  const s=q.trim().toLowerCase();
+  const codes=codeOrder.filter(c=>!s||c.toLowerCase().includes(s)||DATA.S[c].toLowerCase().includes(s));
+  if(!codes.length)return `<div class="empty">No course code matches “${esc(q.trim())}”. Try part of a code, like EC35.</div>`;
+  return `<div class="grid">${codes.map(c=>{const sem=ROWS.find(r=>r.code===c).sem;const ks=[...new Set(ROWS.filter(r=>r.code===c).map(r=>r.k))];
+    const inner=`<span class="code-pill">${esc(c)}</span><h3>${esc(DATA.S[c])}</h3><div class="who"><span>Sem ${sem}</span>${ks.map(k=>`<span>${esc(T[k].n)}</span>`).join("")}</div><span class="go">${ks.length===1?"Open course page →":"Choose teacher ("+ks.length+") →"}</span>`;
+    return ks.length===1?`<a class="card" href="${url(ks[0],c)}" target="_blank" rel="noopener">${inner}</a>`:`<div class="card" role="button" tabindex="0" data-pick="${esc(c)}" data-sem="${sem}" data-sec="">${inner}</div>`;}).join("")}</div>`;
+}
+function browse(){
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  const C=document.getElementById("controls"),N=document.getElementById("note"),O=document.getElementById("out");
+  if(tab==="sem"){C.innerHTML=`<label>Semester</label>`+seg("sem",SEMS,st.sem,v=>"Sem "+v);N.textContent=`${SEM_YEAR[st.sem]} · all sections`;O.innerHTML=subjectCards(st.sem);}
+  if(tab==="year"){C.innerHTML=`<label>Year</label>`+seg("year",SEMS.map(s=>SEM_YEAR[s]),st.year);const sem=SEMS.find(s=>SEM_YEAR[s]===st.year);N.textContent=`${st.year} → Semester ${sem}`;O.innerHTML=subjectCards(sem);}
+  if(tab==="sec"){const secs=st.secSem==="III"?["A","B"]:["A","B","C"];if(!secs.includes(st.sec))st.sec="A";
+    C.innerHTML=`<label>Semester</label>`+seg("secSem",SEMS,st.secSem,v=>"Sem "+v)+`<label style="margin-left:8px">Section</label>`+seg("sec",secs,st.sec);
+    N.textContent=`Your teachers for Semester ${st.secSem}, Section ${st.sec}`;O.innerHTML=subjectCards(st.secSem,st.sec);}
+  if(tab==="code"){C.innerHTML="";N.textContent=q.trim()?`Courses matching “${q.trim()}”`:"Every ECE course this semester. Type a code in the search box to narrow down.";O.innerHTML=codeCards();}
+  tilt("#out .card",6);saveState();
+}
+function pick(code,sem,sec){
+  const ks=[...new Set(ROWS.filter(r=>r.code===code&&r.sem===sem&&(!sec||r.sec===sec)).map(r=>r.k))];
+  const sh=document.getElementById("sheet");
+  sh.innerHTML=`<button class="close" aria-label="Close">×</button><span class="code-pill">${esc(code)}</span><h3>${esc(DATA.S[code])}</h3>
+   <p class="muted" style="margin:0 0 6px;font-size:14px">${/\/|X$/.test(code)?"Elective: open the page of the teacher who takes your elective.":"Choose your teacher."}</p>
+   ${ks.map(k=>{const secs=[...new Set(ROWS.filter(r=>r.code===code&&r.k===k).map(r=>r.sec))].sort().join(", ");
+     return `<a class="opt" href="${url(k,code)}" target="_blank" rel="noopener">${photo(k,TEACHERS.find(t=>t.k===k).i)}<span><b>${esc(T[k].n)}</b><small>Section ${secs}</small></span><span class="arrow">OPEN →</span></a>`}).join("")}`;
+  document.getElementById("sheetBg").hidden=false;sh.querySelector(".close").focus();
+}
+const closeSheet=()=>document.getElementById("sheetBg").hidden=true;
+
+/* ---------- wiring ---------- */
+document.getElementById("tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){tab=b.dataset.tab;browse();}});
+document.getElementById("controls").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;st[b.parentElement.dataset.name]=b.dataset.v;browse();});
+document.getElementById("subnav").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.tab){tab=b.dataset.tab;browse();}
+  document.querySelectorAll("#subnav button").forEach(x=>x.classList.toggle("on",x===b));
+  document.getElementById(b.dataset.go).scrollIntoView({block:"start"});});
+document.getElementById("out").addEventListener("click",e=>{const p=e.target.closest("[data-pick]");if(p)pick(p.dataset.pick,p.dataset.sem,p.dataset.sec);});
+document.getElementById("out").addEventListener("keydown",e=>{const p=e.target.closest("[data-pick]");if(p&&(e.key==="Enter"||e.key===" ")){e.preventDefault();pick(p.dataset.pick,p.dataset.sem,p.dataset.sec);}});
+document.getElementById("sheetBg").addEventListener("click",e=>{if(e.target.id==="sheetBg"||e.target.closest(".close"))closeSheet();});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet();});
+const qEl=document.getElementById("q");
+qEl.addEventListener("input",()=>{q=qEl.value;faculty();if(tab==="code")browse();});
+
+function route(){
+  const ece=location.hash==="#ece";
+  document.getElementById("view-home").hidden=ece;document.getElementById("view-ece").hidden=!ece;
+  document.querySelectorAll(".nav a[data-view]").forEach(a=>a.toggleAttribute("aria-current",false));
+  document.querySelector(`.nav a[data-view="${ece?"ece":"home"}"]`).setAttribute("aria-current","page");
+  if(location.hash!=="#about"&&location.hash!=="#programmes")scrollTo(0,0);
+}
+addEventListener("hashchange",route);
+orbit();home();faculty();browse();route();
+</script>
+
+</body>
+</html>
