@@ -188,6 +188,55 @@ footer{padding-block:28px 40px;color:var(--muted);font-size:13.5px;border-top:1p
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer a{color:var(--copper)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ring{animation:none;transform:rotateX(-14deg) rotateY(-20deg)}.dept,.card,.fcard{transition:none}}
+/* welcome, coloured sub-nav, outcomes */
+#view-ece section{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 120px)}
+:root{--k1:#B8622A;--k2:#0F7C74;--k3:#2B5FA8;--k4:#7A4BA6;--k5:#B23A5B;--k6:#3C7A2E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--k1:#E58A4E;--k2:#3CC3B5;--k3:#6EA0E8;--k4:#B58BE0;--k5:#EB7A98;--k6:#8BCB6E}}
+:root[data-theme="dark"]{--k1:#E58A4E;--k2:#3CC3B5;--k3:#6EA0E8;--k4:#B58BE0;--k5:#EB7A98;--k6:#8BCB6E}
+.subnav .nb{border-color:color-mix(in srgb,var(--c) 45%,var(--line));color:var(--c);background:color-mix(in srgb,var(--c) 9%,var(--surface))}
+.subnav .nb:hover,.subnav .nb.on{background:var(--c);border-color:var(--c);color:#fff}
+.welcome{margin-top:16px;border-radius:20px;padding:18px 20px;background:linear-gradient(135deg,color-mix(in srgb,var(--k2) 14%,var(--surface)),color-mix(in srgb,var(--k1) 12%,var(--surface)));border:1px solid var(--line);display:grid;gap:10px;max-width:900px}
+.welcome h2{font-size:clamp(20px,2.6vw,26px)}
+.welcome p{margin:0;max-width:68ch}
+.jumps{display:flex;flex-wrap:wrap;gap:8px}
+.jump{font:600 13.5px var(--f-body);padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.jump:hover{border-color:var(--copper)}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.trio{grid-template-columns:1fr}}
+.ocard{border-radius:18px;padding:18px;background:color-mix(in srgb,var(--c) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 35%,var(--line))}
+.ocard .big{font-size:30px;line-height:1}
+.ocard h3{font:800 22px var(--f-display);margin:10px 0 2px;color:var(--c)}
+.ocard b{display:block;margin-bottom:6px}
+.ocard p{margin:0;font-size:14.5px}
+.flow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0 6px;font-weight:600;font-size:14px}
+.flow .n{padding:8px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.flow .ar{color:var(--muted);font-weight:700}
+.why{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.why div{padding:14px 16px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);font-size:14.5px}
+.why b{display:block;margin-bottom:4px;font-size:15px}
+.subh{font:700 20px var(--f-display);margin:34px 0 12px}
+.pogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.po{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.po header{display:flex;align-items:center;gap:10px}
+.po .em{font-size:24px;line-height:1}
+.po .id{font:700 12px var(--f-mono);color:var(--k2);display:block}
+.po.pso .id{color:var(--k4)}
+.po h4{margin:0;font-size:15.5px;line-height:1.25}
+.po p{margin:0;font-size:14px}
+.po details{font-size:13px;color:var(--muted)}
+.po summary{cursor:pointer;font-weight:600;color:var(--k3)}
+.cochips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.colist{display:grid;gap:10px}
+.co{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.co .num{font:800 16px var(--f-display);color:var(--k1);min-width:44px}
+.co p{margin:0}
+.maps{grid-column:2;display:flex;flex-wrap:wrap;gap:5px}
+.mp{font:700 11.5px var(--f-mono);padding:3px 7px;border-radius:7px;display:inline-block}
+.mp.s3{background:var(--k2);color:#fff}
+.mp.s2{background:color-mix(in srgb,var(--k2) 30%,var(--surface));color:var(--ink)}
+.mp.s1{border:1px solid var(--k2);color:var(--k2)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:var(--muted);margin:0 0 12px}
+@media (max-width:520px){.co{grid-template-columns:1fr}.maps{grid-column:1}}
 </style>
 </head>
 <body>
@@ -256,16 +305,22 @@ footer a{color:var(--copper)}
     <div class="ece-head">
       <div class="eyebrow" style="margin-top:10px">Department of ECE · Undergraduate</div>
       <h1>Electronics and Communication Engineering</h1>
+      <div class="welcome">
+        <h2>Welcome, ECE students! 👋</h2>
+        <p>This is your Study Hour space. Your teachers have put their course pages here: notes, slides, assignments, revision videos and NPTEL/SWAYAM links, all in one place. Give yourself one focused study hour every day, pick a course and keep going. You've got this! 📚✨</p>
+        <div class="jumps"><button class="jump" data-jump="faculty">👩‍🏫 Find your teacher</button><button class="jump" data-jump="browse">📅 Pick your semester</button><button class="jump" data-jump="outcomes">🎯 Know your outcomes</button></div>
+      </div>
       <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
         <input id="q" type="search" placeholder="Search teacher, subject or course code" autocomplete="off" aria-label="Search teachers and courses"></div>
     </div>
   </div>
   <div class="subnav"><div class="wrap" id="subnav">
-    <button data-go="faculty" data-tab="">Faculty</button>
-    <button data-go="browse" data-tab="sem">Semester</button>
-    <button data-go="browse" data-tab="year">Year</button>
-    <button data-go="browse" data-tab="sec">Section</button>
-    <button data-go="browse" data-tab="code">Course code</button>
+    <button class="nb" style="--c:var(--k1)" data-go="faculty" data-tab="">👩‍🏫 Faculty</button>
+    <button class="nb" style="--c:var(--k2)" data-go="browse" data-tab="sem">📅 Semester</button>
+    <button class="nb" style="--c:var(--k3)" data-go="browse" data-tab="year">🎓 Year</button>
+    <button class="nb" style="--c:var(--k4)" data-go="browse" data-tab="sec">🏫 Section</button>
+    <button class="nb" style="--c:var(--k5)" data-go="browse" data-tab="code">🔢 Course code</button>
+    <button class="nb" style="--c:var(--k6)" data-go="outcomes" data-tab="">🎯 Outcomes</button>
   </div></div>
 
   <section id="faculty" style="padding-top:22px">
@@ -287,6 +342,39 @@ footer a{color:var(--copper)}
       <div class="controls" id="controls"></div>
       <p class="panel-note" id="note"></p>
       <div id="out"></div>
+    </div>
+  </section>
+
+  <section id="outcomes">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Know your outcomes 🎯</div><h2>COs, POs and PSOs, in plain words</h2>
+        <p>Every subject you study is planned around outcomes: what you should be able to do at the end. Here is what the three terms mean and why they matter to you.</p></div>
+      <div class="trio">
+        <div class="ocard" style="--c:var(--k1)"><div class="big">📘</div><h3>COs</h3><b>Course Outcomes</b><p>What you will be able to do after finishing one subject. Each subject has 4 to 6 COs, written in its syllabus as CO1, CO2 and so on.</p></div>
+        <div class="ocard" style="--c:var(--k2)"><div class="big">🎓</div><h3>POs</h3><b>Programme Outcomes</b><p>11 abilities every engineering graduate should have by the end of the B.E. They are set by the NBA and are the same for every branch.</p></div>
+        <div class="ocard" style="--c:var(--k4)"><div class="big">🔌</div><h3>PSOs</h3><b>Programme Specific Outcomes</b><p>2 abilities that are special to ECE graduates, set by our department.</p></div>
+      </div>
+      <div class="flow"><span class="n">📘 CO1 to CO5 of every subject</span><span class="ar">➜</span><span class="n">🎓 11 POs + 🔌 2 PSOs</span><span class="ar">➜</span><span class="n">🏅 A complete ECE engineer</span></div>
+
+      <h3 class="subh">🤔 Why should you know them?</h3>
+      <div class="why">
+        <div><b>🗺️ A map for every subject</b>COs tell you exactly what you are expected to learn, so you know what to focus on.</div>
+        <div><b>📝 Smarter exam prep</b>Internal test and SEE questions are tagged with COs. Revise CO by CO and you won't miss a topic.</div>
+        <div><b>📈 Your marks matter twice</b>The department uses your marks to measure how well each CO was achieved, and plans extra help where a CO is weak.</div>
+        <div><b>💼 Ready for jobs and higher studies</b>Problem solving, using tools, teamwork and communication are exactly what recruiters and interview panels look for.</div>
+      </div>
+
+      <h3 class="subh">🎓 Programme Outcomes (POs)</h3>
+      <div class="pogrid" id="poGrid"></div>
+
+      <h3 class="subh">🔌 Programme Specific Outcomes (PSOs) of ECE</h3>
+      <div class="pogrid" id="psoGrid"></div>
+
+      <h3 class="subh">📘 COs of your subjects</h3>
+      <p class="legend">Each CO builds some POs and PSOs. <span class="mp s3">3</span> strong 💪 <span class="mp s2">2</span> medium 👍 <span class="mp s1">1</span> slight 👌</p>
+      <div class="cochips" id="coChips"></div>
+      <div class="colist" id="coList"></div>
+      <p class="panel-note" style="margin-top:12px">III semester COs are from the BoS-approved 2025 scheme syllabus. V and VII semester COs will be added soon; until then, see the CO section of your syllabus. 🙂</p>
       <a class="back" href="#home">← Back to all programmes</a>
     </div>
   </section>
@@ -485,7 +573,45 @@ function route(){
   if(location.hash!=="#about"&&location.hash!=="#programmes")scrollTo(0,0);
 }
 addEventListener("hashchange",route);
-orbit();home();faculty();browse();route();
+/* ---------- ECE: outcomes ---------- */
+const POS = [
+ ["PO1","🧠","Engineering Knowledge","Use maths, science and engineering basics to solve real engineering problems.","Apply knowledge of mathematics, natural science, computing, engineering fundamentals and an engineering specialization as specified in WK1 to WK4 respectively to develop to the solution of complex engineering problems."],
+ ["PO2","🔍","Problem Analysis","Break a tough problem into parts, read up on it, and reason your way to a solid answer.","Identify, formulate, review research literature and analyze complex engineering problems reaching substantiated conclusions with consideration for sustainable development. (WK1 to WK4)"],
+ ["PO3","🛠️","Design/Development of Solutions","Design something that works and is also safe, affordable and good for people and the planet.","Design creative solutions for complex engineering problems and design/develop systems/components/processes to meet identified needs with consideration for the public health and safety, whole-life cost, net zero carbon, culture, society and environment as required. (WK5)"],
+ ["PO4","🧪","Conduct Investigations of Complex Problems","Plan experiments, collect and study data, and draw conclusions you can defend.","Conduct investigations of complex engineering problems using research-based knowledge including design of experiments, modelling, analysis & interpretation of data to provide valid conclusions. (WK8)"],
+ ["PO5","💻","Engineering Tool Usage","Pick and use modern tools such as simulators, CAD and coding, and know their limits.","Create, select and apply appropriate techniques, resources and modern engineering & IT tools, including prediction and modelling recognizing their limitations to solve complex engineering problems. (WK2 and WK6)"],
+ ["PO6","🌍","The Engineer and The World","Think about how your work affects society, health, safety, law and the environment.","Analyze and evaluate societal and environmental aspects while solving complex engineering problems for its impact on sustainability with reference to economy, health, safety, legal framework, culture and environment. (WK1, WK5, and WK7)"],
+ ["PO7","⚖️","Ethics","Be honest, fair and respectful, and follow laws and professional codes.","Apply ethical principles and commit to professional ethics, human values, diversity and inclusion; adhere to national & international laws. (WK9)"],
+ ["PO8","🤝","Individual and Collaborative Team work","Work well on your own and in teams, as a member or as a leader.","Function effectively as an individual, and as a member or leader in diverse/multi-disciplinary teams."],
+ ["PO9","🗣️","Communication","Write clear reports and give good presentations that anyone can follow.","Communicate effectively and inclusively within the engineering community and society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations considering cultural, language, and learning differences."],
+ ["PO10","📊","Project Management and Finance","Plan a project, manage time and money, and lead it to completion.","Apply knowledge and understanding of engineering management principles and economic decision-making and apply these to one's own work, as a member and leader in a team, and to manage projects and in multidisciplinary environments."],
+ ["PO11","🌱","Life-Long Learning","Keep learning new technology on your own, all through your career.","Recognize the need for, and have the preparation and ability for i) independent and life-long learning ii) adaptability to new and emerging technologies and iii) critical thinking in the broadest context of technological change. (WK8)"],
+];
+const PSOS = [
+ ["PSO1","🔬","Interpretation Skills","Build and test electronic circuits and systems, and explain clearly what your results mean.","Design, verify and validate electronic functional elements for a variety of applications with skills to interpret and communicate results."],
+ ["PSO2","🧩","Core Competencies","Design and build in ECE's three core areas: VLSI chips, communication systems and embedded systems.","Analysis, design and implementation of VLSI systems, communication systems and embedded systems."],
+];
+const COS = [["MVJ25EC31","Probability and Transformation Techniques",[["Develop probability distribution of discrete, continuous random variables and joint probability distribution occurring in digital signal processing, information theory and Design engineering.",[3,2,0,0,0,0,0,0,0,0,2,0,0]],["Understand the analytic functions and application of Bi-linear, Conformal Transformation.",[3,2,0,0,0,0,0,0,0,0,1,0,0]],["Communications, Know the use of periodic signals and Fourier series to analyze circuits and system.",[3,3,1,0,0,0,0,0,0,0,1,0,0]],["To use and to apply Fourier Transform, Z-Transform techniques to solve difference equations in Engineering.",[3,2,0,0,0,0,0,0,0,0,2,0,0]],["Fit a suitable curve by the method of least squares and determine the lines of regression for a set of statistical data",[3,3,1,0,0,0,0,0,0,0,2,0,0]]]],["MVJ25EC32","Digital Circuits and Verilog HDL",[["Explain the fundamentals of Verilog HDL, including module structure, data types, operators, and apply dataflow, Behavioral, and structural modelling techniques to design basic digital circuits.",[3,2,1,0,1,0,0,0,0,0,1,0,0]],["Analyze and design combinational logic circuits using Boolean algebra, Karnaugh maps, and Verilog HDL for realizing adders, subtractors, multiplexers, demultiplexers, encoders, decoders, and comparators.",[3,2,3,0,2,0,0,0,0,0,1,0,0]],["Design and model sequential circuits, including latches, flip-flops, and master-slave configurations, using Verilog HDL and analyze their functional behavior.",[3,3,2,1,2,0,0,0,0,0,1,0,0]],["Design and implement shift registers, counters, serial and parallel adders, and develop behavioural models for synchronous and asynchronous sequential circuits using Verilog HDL.",[3,2,3,1,3,0,0,0,1,1,2,0,0]],["Design, model, and simulate combinational and sequential circuits using Verilog HDL dataflow, behavioral, and structural modelling techniques with Xilinx Vivado.",[0,0,0,0,0,0,0,0,0,0,0,0,0]]]],["MVJ25EC33","Analog Electronics and Linear Integrated Circuits",[["Analyse a given analog electronic circuit to compute required parameters.",[3,2,1,0,1,0,0,1,0,0,0,3,1]],["Design analog electronic circuits for a given specification.",[3,2,1,0,1,0,0,1,0,0,0,2,2]],["Design and Demonstrate op-amp as AC amplifier.",[3,2,1,0,1,0,0,1,0,0,0,3,0]],["Design and analyse the non-linear applications circuits & applications of op-amp as filters, 555 timers IC as Multivibrators.",[3,2,1,0,1,0,0,1,0,0,0,2,2]]]],["MVJ25EC34","Network Analysis",[["Determine currents and voltages in a circuit using network simplification techniques.",[3,3,3,2,2,1,0,0,0,0,1,2,1]],["Solve the network problems using graphical methods.",[3,3,3,2,2,1,0,0,0,0,1,2,2]],["Simplify the complex circuits using network theorems.",[3,3,3,2,2,1,0,0,0,0,1,3,1]],["Analyse simple DC circuits and apply the concepts to transient conditions.",[3,3,3,2,2,1,0,0,0,0,1,3,1]],["Solve the given network using specified two port network parameters like Z or Y or T or h and Evaluate frequency response related parameters through the RLC elements, in resonant circuits.",[3,3,3,2,2,1,0,0,0,0,1,3,2]]]],["MVJ25EC35","Engineering Electromagnetics",[["Apply the fundamental laws of electromagnetics to the problems related to electric and magnetic fields.",[3,2,0,0,0,0,0,0,0,0,0,1,2]],["Analyse the behaviour of electrostatic and magnetostatic fields in different media using Maxwell's Equations, Boundary Conditions and Potential Theory.",[3,3,2,0,2,0,0,0,0,0,0,0,1]],["Evaluate electromagnetic wave propagation in different materials by deriving wave equations integrating the principles of static and time varying fields.",[2,2,2,0,0,0,0,0,0,0,0,1,0]],["Design transmission line models for impedance matching and tuning using Smith Chart techniques, ensuring efficient signal transmission.",[2,3,2,2,0,0,0,0,0,0,0,0,0]]]],["MVJ25AECK37","Sustainable Engineering and SDGs",[["Explain sustainability, sustainable development and the role of engineers",[1,0,0,0,0,2,3,0,0,0,0,0,0]],["Explain different types of environmental pollution problems, SDGs, relate them to engineering applications, and their sustainable solutions",[1,0,0,0,1,2,3,0,0,0,0,0,0]],["Explain life cycle thinking and environmental footprints",[0,0,0,0,1,2,3,0,0,0,0,0,0]],["Apply basic principles of sustainable engineering and circular economy",[0,0,0,0,1,2,3,0,0,0,0,0,0]],["Propose a basic sustainable engineering solution to a real-life problem",[0,0,0,0,0,2,3,0,0,0,0,0,0]]]],["MVJ25MATDIP310","Additional Mathematics – I",[["Apply the knowledge of calculus to solve problems related to polar curves and its applications",[3,3,0,2,0,0,0,0,0,1,1,0,0]],["Apply the concept of integration and variables to evaluate multiple integrals and their usage in computing the area and volumes.",[3,3,0,2,0,0,0,0,0,1,1,0,0]],["Illustrate the applications of multivariate calculus to understand the solenoidal and irrotational vectors and also exhibit the inter dependence of line, surface and volume integrals.",[3,3,0,3,0,0,0,0,0,0,1,0,0]],["Understand the basic Concepts of Probability",[2,2,0,3,0,0,0,0,0,1,1,0,0]],["Recognize and solve first-order ordinary differential equations occurring in different branches of engineering",[2,2,0,2,0,0,0,0,0,0,1,0,0]]]]];
+const MAPLBL = [...POS.map(p=>[p[0],p[2]]),...PSOS.map(p=>[p[0],p[2]])];
+let coSel = "MVJ25EC35";
+const poCard = (p,cls) => `<article class="po ${cls}"><header><span class="em">${p[1]}</span><div><span class="id">${p[0]}</span><h4>${esc(p[2])}</h4></div></header><p>${esc(p[3])}</p><details><summary>Official statement</summary>${esc(p[4])}</details></article>`;
+function outcomes(){
+  document.getElementById("poGrid").innerHTML = POS.map(p=>poCard(p,"")).join("");
+  document.getElementById("psoGrid").innerHTML = PSOS.map(p=>poCard(p,"pso")).join("");
+  coRender();
+}
+function coRender(){
+  document.getElementById("coChips").innerHTML = COS.map(([c,n])=>`<button class="chipbtn" aria-pressed="${c===coSel}" data-co="${c}" title="${esc(n)}">${esc(c)} · ${esc(n)}</button>`).join("");
+  const [code,name,cos] = COS.find(x=>x[0]===coSel);
+  document.getElementById("coList").innerHTML = cos.map(([s,m],i)=>{
+    const chips = m.map((v,j)=>v?`<span class="mp s${v}" title="${MAPLBL[j][0]} ${esc(MAPLBL[j][1])}: ${v===3?"strong":v===2?"medium":"slight"}">${MAPLBL[j][0]}·${v}</span>`:"").join("");
+    return `<div class="co"><span class="num">CO${i+1}</span><p>${esc(s)}</p><div class="maps">${chips||'<span class="muted" style="font-size:13px">Mapping not given in the syllabus</span>'}</div></div>`;
+  }).join("");
+}
+document.getElementById("coChips").addEventListener("click",e=>{const b=e.target.closest("[data-co]");if(b){coSel=b.dataset.co;coRender();}});
+document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>document.getElementById(b.dataset.jump).scrollIntoView({block:"start"})));
+
+orbit();home();faculty();browse();outcomes();route();
 </script>
 
 </body>
