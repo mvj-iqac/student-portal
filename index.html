@@ -302,6 +302,8 @@ const DATA = {"T":[{"k":"ajayan","n":"Dr. Ajayan K R","id":"ajayan"},{"k":"anna"
 /* Edit this list to change the programme cards. live:true makes a card open its portal. */
 const DEPARTMENTS = [
   {lvl:"UG",code:"ECE",name:"Electronics and Communication Engineering",live:true,href:"#ece",g:"wave"},
+  {lvl:"UG",code:"ECE-ACT",name:"Electronics and Communication (Advanced Communication Technology)",g:"iot"},
+  {lvl:"UG",code:"EE-VLSI",name:"Electronics Engineering (VLSI Design and Technology)",g:"chip"},
   {lvl:"UG",code:"AERO",name:"Aeronautical Engineering",g:"wing"},
   {lvl:"UG",code:"AIML",name:"Artificial Intelligence and Machine Learning",g:"net"},
   {lvl:"UG",code:"ASE",name:"Aerospace Engineering",g:"orbit"},
@@ -318,6 +320,7 @@ const DEPARTMENTS = [
   {lvl:"PG",code:"AE",name:"M.Tech – Aeronautical Engineering",g:"wing"},
   {lvl:"PG",code:"AI&DS",name:"M.Tech – Artificial Intelligence and Data Science",g:"net"},
   {lvl:"PG",code:"STR",name:"M.Tech – Structural Engineering",g:"beam"},
+  {lvl:"PG",code:"TRN",name:"M.Tech – Transportation Engineering",g:"beam"},
   {lvl:"PG",code:"VLSI",name:"M.Tech – VLSI Design and Technology",g:"chip"},
   {lvl:"PG",code:"CSE",name:"M.Tech – Computer Science and Engineering",g:"db"},
   {lvl:"PG",code:"ACT",name:"M.Tech – Advanced Communication Technology",g:"iot"},
@@ -378,7 +381,7 @@ function orbit(){
   document.querySelectorAll("[data-orbit]").forEach(box=>{
     box.innerHTML=`<div class="ring">${tiles.map((g,i)=>`<div class="tile" style="--a:${i*step}deg">${svg(g)}<span>${labels[g]}</span></div>`).join("")}</div>
       <div class="crest"><img src="${LOGO}" alt="MVJ College of Engineering" onerror="this.outerHTML='<span class=&quot;logo-fallback&quot; style=&quot;font-size:22px&quot;>MVJCE</span>'"></div>
-      <span class="orbit-tag">20 programmes · one portal</span>`;
+      <span class="orbit-tag">${DEPARTMENTS.length} programmes · one portal</span>`;
   });
 }
 function home(){
